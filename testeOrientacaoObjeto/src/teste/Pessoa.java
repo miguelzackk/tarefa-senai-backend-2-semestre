@@ -7,11 +7,17 @@ public class Pessoa {
 	public int idade;
 	public int peso;
 	public String genero;
+	public double alt;
 	
 	@Override
 	public String toString() {
 		return "Pessoa [nome=" + nome + ", idade=" + idade + ", peso=" + peso + ", genero=" + genero + "]";
 	}
+	
+	public double calculoImc() {
+		return peso / (alt * alt);
+	}
+	
 	
 	}
 
