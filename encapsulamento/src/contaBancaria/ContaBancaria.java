@@ -11,43 +11,83 @@ public class ContaBancaria {
 	public boolean valuemenu;
 
 	public void saldo() {
-		System.out.println("Seu saldo é: " + saldo);
+		System.out.printf("Seu saldo é: R$%.2f.%n", saldo);
 	}
 
-	public void deposito() {
-		Scanner sc = new Scanner(System.in);
-
+	public void deposito(Scanner sc) {
 		do {
-			System.out.println("Insira o valor que deseja depositar:");
+			System.out.println("Digite o valor que deseja depositar:");
 			deposito = sc.nextDouble();
+
 			if (deposito <= 0) {
-				System.out.println("O valor inserido é inválido.");
+				System.out.println("Valor inválido.");
+				valuemenu = true;
 			} else {
+				saldo = saldo + deposito;
+				System.out.printf("Valor adicionado! \nSeu novo saldo é: R$%.2f.%n", saldo);
 				valuemenu = false;
 			}
-		} while (valuemenu);
-		saldo = saldo + deposito;
-		System.out.println("Seu novo saldo é: " + saldo);
-		sc.close();
+
+		} while (valuemenu == true);
+
 	}
 
-	public void saque() {
-		Scanner sc = new Scanner(System.in);
+	public void saque(Scanner sc) {
+		if (saldo == 0) {
+			System.out.println("Você está sem saldo!");
+		} else {
+			do {
+				System.out.println("Digite o valor que deseja sacar:");
+				saque = sc.nextDouble();
 
-		do {
-			System.out.println("Insira o valor que deseja sacar:");
-			saque = sc.nextDouble();
-			if (saque > saldo) {
-				System.out.println("Valor inválido. Seu saldo é insuficiente");
-			} else if (saque <= 0) {
-				System.out.println("O valor inserido é inválido.");
-			} else {
-				valuemenu = false;
-			}
-		} while (valuemenu);
-		saldo = saldo - saque;
-		System.out.println("Seu novo saldo é: " + saldo);
-		sc.close();
+				if (saque <= 0) {
+					System.out.println("Valor inválido.");
+					valuemenu = true;
+				} else if (saldo < saque) {
+					System.out.printf("Saldo insuficiente. \nSeu saldo é de: R$%.2f. Faça um saque válido.%n", saldo);
+					valuemenu = true;
+				} else {
+					saldo = saldo - saque;
+					System.out.printf("Valor sacado! \nSeu novo saldo é: R$%.2f.%n", saldo);
+					valuemenu = false;
+				}
+
+			} while (valuemenu == true);
+
+		}
+
+	}
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
+
+	public double getDeposito() {
+		return deposito;
+	}
+
+	public void setDeposito(double deposito) {
+		this.deposito = deposito;
+	}
+
+	public double getSaque() {
+		return saque;
+	}
+
+	public void setSaque(double saque) {
+		this.saque = saque;
+	}
+
+	public int getOptionmenu() {
+		return optionmenu;
+	}
+
+	public void setOptionmenu(int optionmenu) {
+		this.optionmenu = optionmenu;
 	}
 
 }
