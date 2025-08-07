@@ -2,7 +2,7 @@ package exerciciosGetSet;
 
 import java.util.Scanner;
 
-public class Main {
+public class MainPessoa {
 
 	public static void main(String[] args) {
 		Pessoa person =  new Pessoa();
