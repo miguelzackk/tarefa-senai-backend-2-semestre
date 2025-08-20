@@ -25,8 +25,18 @@ public class Funcionario {
 	public double getSalario() {
 		return salario;
 	}
-	public void setSalario(double salario) {
-		this.salario = salario;
+
+	
+	public double calculoSalario(double salario) {
+		return salario =  salario - 100;
+	}
+	
+	
+	
+	
+	@Override
+	public String toString() {
+		return "Funcionario [nome=" + nome + ", rg=" + rg + ", salario=" + salario + "]";
 	}
 	
 	

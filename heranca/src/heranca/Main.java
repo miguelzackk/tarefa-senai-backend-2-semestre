@@ -4,14 +4,12 @@ public class Main {
 
 	public static void main(String[] args) {
 	
-		Engenheiro eng = new Engenheiro("Denis", "42517852X", 7000, 547821);
+		Contador cont = new Contador("Danilo","564332592",2000,2343);
 		
-		System.out.println(eng.getNome());
+		System.out.println(cont.calculoSalario(2000));
 		
-		eng.setNome("Heitor");
+		Eletricista elet = new Eletricista("Danilo", "dwadaw", 2000, false);
+		System.out.println(elet.calculoSalario(2000));
 		
-		System.out.println(eng.getNome());
-
 	}
-
 }

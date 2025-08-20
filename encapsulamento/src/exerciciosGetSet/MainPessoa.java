@@ -32,6 +32,7 @@ public class MainPessoa {
 		
 		System.out.println("Seu nome é " + person.getNome() + " e sua idade é " + person.getIdade() + ".");
 		
+		sc.close();		
 	}
 
 }
