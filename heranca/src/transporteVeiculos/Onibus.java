@@ -2,6 +2,10 @@ package transporteVeiculos;
 
 public class Onibus extends Veiculo {
 	private int numero_paradas;
+	private float timeparadas;
+	private int horas;
+	private float timedec;
+	private int minutos;
 
 	public Onibus(float dist, float velo, int numero_paradas) {
 		super(dist, velo);
@@ -16,9 +20,17 @@ public class Onibus extends Veiculo {
 		this.numero_paradas = numero_paradas;
 	}
 
+	@Override
 	public void calcularTempo() {
-		System.out
-				.println("Ônibus: " + (((super.getDist() / super.getVelo()) * 60) + numero_paradas * 15) + " minutos.");
+		timeparadas = (float) (numero_paradas * 0.25);
+		timedec = super.getDist() / super.getVelo();
+		timedec = timedec + timeparadas;
+		horas = (int) timedec;
+		timedec = timedec - horas;
+		timedec = timedec * 60;
+		minutos = Math.round(timedec);
+		System.out.println("Ônibus: " + horas + " horas e " + minutos + " minutos.");
+
 	}
 
 }

@@ -1,6 +1,9 @@
 package transporteVeiculos;
 
 public class Carro extends Veiculo {
+	private int horas;
+	private float timedec;
+	private int minutos;
 
 	public Carro(float dist, float velo) {
 		super(dist, velo);
@@ -8,7 +11,13 @@ public class Carro extends Veiculo {
 
 	@Override
 	public void calcularTempo() {
-		System.out.println("Carro: " + ((super.getDist() / super.getVelo())* 60) + " minutos.");
+		timedec = super.getDist() / super.getVelo();
+		horas = (int) timedec;
+		timedec = timedec - horas;
+		timedec = timedec * 60;
+		minutos = (int) timedec;
+
+		System.out.println("Carro: " + horas + " horas e " + minutos + " minutos.");
 	}
 
 }
