@@ -5,94 +5,142 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+//fiz o commit no perfil errado, só isso
 	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
 
 		List<Pessoa> banco = new ArrayList<>();
-		banco.add(new Pessoa(1, "Alice", 25));
-		banco.add(new Pessoa(2, "Bruno", 30));
-		banco.add(new Pessoa(3, "Carla", 22));
-		banco.add(new Pessoa(4, "Daniel", 28));
-		banco.add(new Pessoa(5, "Ester", 35));
+
+		banco.add(new Pessoa(1, "Bruno", 15));
+		banco.add(new Pessoa(2, "Roberto", 24));
+		banco.add(new Pessoa(3, "Julia", 45));
+		banco.add(new Pessoa(4, "Vitor", 12));
+		banco.add(new Pessoa(5, "Sergio", 20));
 
 		List<Pessoa> cache = new ArrayList<>();
 
-		Scanner sc = new Scanner(System.in);
-		System.out.print("Bem-vindo ao nosso sistema de registro de pessoas!");
-		System.out.println("\nPara utilizar, use da seguinte maneira:");
+		System.out.println("Bem-Vindo ao nosso registro no banco de dados!");
+
 		while (true) {
-
+			System.out.println("\nDeseja o que deseja fazer:");
+			System.out.println("1 - Listar dados do banco de dados.");
+			System.out.println("2 - Listar cache.");
+			System.out.println("3 - Adicionar pessoa ao banco de dados.");
+			System.out.println("4 - Adicionar pessoa (via id) no cache.");
+			System.out.println("0 - Sair do sistema.");
 			System.out.println(
-					"\nDigite o ID da pessoa que está armazenada no banco para adicionar no cache. \nDigite -1 para adicionar uma pessoa ao banco. \nDigite -2 para visualizar o cache. \nALERTA: O LIMITE DO CACHE É DE 10 PESSOAS. \nSE TENTAR ARMAZENAR UMA ESTANDO NO LIMITE, O RESGISTRO MAIS ANTIGO SERÁ APAGADO.");
-			int id = sc.nextInt();
+					"\nALERTA - O CACHE ARMAZENA SOMENTE 10 PESSOAS. \nSE ADICIONAR MAIS UMA PESSOA NO CACHE COM O LIMITE ATINGIDO, \nELE IRÁ REMOVER O REGISTRO MAIS ANTIGO E ADICIONARÁ O NOVO.");
+			int menu = sc.nextInt();
 
-			if (id == 0) {
-				System.out.println("Encerrando programa...");
-				break;
-			}
-
-			if (id == -1) {
-
-				System.out.print("Digite o ID da nova pessoa: ");
-				int novoId = sc.nextInt();
-				sc.nextLine();
-
-				System.out.print("Digite o nome da nova pessoa: ");
-				String nome = sc.nextLine();
-
-				System.out.print("Digite a idade da nova pessoa: ");
-				int idade = sc.nextInt();
-
-				banco.add(new Pessoa(novoId, nome, idade));
-
-				System.out.println("Pessoa adicionada ao banco.");
-				continue;
-			}
-
-			if (id == -2) {
-
-				if (cache.isEmpty()) {
-					System.out.println("Cache está vazio.");
-				} else {
-					System.out.println("Conteúdo do cache:");
-					for (Pessoa p : cache) {
-						System.out.println(p);
-					}
+			switch (menu) {
+			case 1:
+				for (Pessoa pessoa : banco) {
+					System.out.println(pessoa);
 				}
-				continue;
-			}
+				break;
 
-			Pessoa encontrada = null;
-
-			for (Pessoa p : cache) {
-				if (p.getId() == id) {
-					encontrada = p;
+			case 2:
+				if (cache.isEmpty()) {
+					System.out.println("O cache está vazio.");
 					break;
 				}
-			}
+				for (Pessoa pessoa : cache) {
+					System.out.println(pessoa);
+				}
+				break;
 
-			if (encontrada != null) {
-				System.out.println("Pessoa encontrada no cache: " + encontrada);
-			} else {
+			case 3:
+				System.out.println("Digite o id que deseja adicionar.");
+				int id = sc.nextInt();
 
-				for (Pessoa p : banco) {
-					if (p.getId() == id) {
-						encontrada = p;
+				boolean existid = false;
+
+				for (Pessoa pessoa : banco) {
+					if (pessoa.getId() == id) {
+						existid = true;
 						break;
 					}
 				}
 
-				if (encontrada != null) {
-					if (cache.size() == 10) {
-						cache.remove(0);
-					}
-					cache.add(encontrada);
-					System.out.println("Pessoa buscada no banco e adicionada ao cache: " + encontrada);
-				} else {
-					System.out.println("Pessoa com ID " + id + " não encontrada.");
+				if (existid) {
+					System.out.println("Já existe um perfil com esse id. \nTente novamente.");
+					break;
 				}
+				System.out.println("Digite o nome do perfil que deseja adicionar.");
+				String nome = sc.next();
+
+				System.out.println("Digite a idade do perfil que deseja adicionar.");
+				int idade = sc.nextInt();
+
+				banco.add(new Pessoa(id, nome, idade));
+
+				System.out.println("Pessoa adicionada com sucesso!");
+				break;
+
+			case 4: {
+				System.out.println("Digite o ID do usuário que deseja adicionar no cache.");
+				int idBusca = sc.nextInt();
+
+				if (idBusca <= 0) {
+					System.out.println("Seu ID é inválido (ID NEGATIVO). Tente novamente.");
+					break;
+				}
+
+				boolean existeNoBD = false;
+
+				for (Pessoa pessoa : banco) {
+					if (pessoa.getId() == idBusca) {
+						existeNoBD = true;
+						break;
+					}
+				}
+
+				if (!existeNoBD) {
+					System.out.println("O ID inserido não existe no banco de dados!");
+					break;
+				}
+
+				boolean existeNoCache = false;
+
+				for (Pessoa pessoa : cache) {
+					if (pessoa.getId() == idBusca) {
+						existeNoCache = true;
+						break;
+					}
+				}
+				if (existeNoCache) {
+					System.out.println("O ID inserido já está adicionado no cache.");
+					break;
+				}
+
+				Pessoa pessoaadd = null;
+				for (Pessoa pessoa : banco) {
+					if (pessoa.getId() == idBusca) {
+						pessoaadd = pessoa;
+						break;
+					}
+				}
+
+				if (cache.size() == 10) {
+					cache.remove(0);
+				}
+
+				cache.add(pessoaadd);
+				System.out.println("Pessoa adicionada no cache!");
+
+				break;
 			}
+
+			case 0:
+				System.out.println("Saindo.");
+				return;
+			default:
+				System.out.println("Valor inválido. Tente novamente.");
+				break;
+			}
+
+			sc.close();
 		}
 
-		sc.close();
 	}
 }
