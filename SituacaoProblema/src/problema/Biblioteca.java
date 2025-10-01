@@ -15,11 +15,32 @@ public class Biblioteca {
 		sc = new Scanner(System.in);
 	}
 
-	// adicionar livro digitando os dados
+	public List<Emprestimo> getEmprestimos() {
+		return emprestimos;
+	}
+
+	public List<Livro> getLivros() {
+		return livros;
+	}
+
 	public void adicionarLivro() {
 		System.out.print("Código do livro: ");
-		int codigo = sc.nextInt();
-		sc.nextLine();
+		int codigo;
+		try {
+			codigo = Integer.parseInt(sc.nextLine());
+		} catch (NumberFormatException e) {
+			System.out.println("ERRO: Código inválido. Por favor, digite um número.");
+			return;
+		}
+
+		// Percorre a lista de livros para verificar se o código já está em uso
+		for (Livro livroExistente : livros) {
+			if (livroExistente.getCodig() == codigo) {
+				System.out.println("\nERRO: Já existe um livro cadastrado com o código " + codigo + ".");
+				System.out.println("-> Título do livro existente: '" + livroExistente.getTitle() + "'");
+				return; // Interrompe a execução do método para não adicionar o livro duplicado
+			}
+		}
 
 		System.out.print("Título: ");
 		String titulo = sc.nextLine();
@@ -27,9 +48,9 @@ public class Biblioteca {
 		System.out.print("Autor: ");
 		String autor = sc.nextLine();
 
-		Livro l = new Livro(codigo, titulo, autor, null);
-		livros.add(l);
-		System.out.println("Livro adicionado: " + l.getTitle());
+		Livro novoLivro = new Livro(codigo, titulo, autor, StatusLivro.DISPONIVEL);
+		livros.add(novoLivro);
+		System.out.println("Livro '" + novoLivro.getTitle() + "' adicionado com sucesso!");
 	}
 
 	// emprestar livro passando objeto Usuario
@@ -52,7 +73,6 @@ public class Biblioteca {
 			return;
 		}
 
-		// conta quantos livros já pegou
 		int emprestados = 0;
 		for (Emprestimo e : emprestimos) {
 			if (e.getUsuario().getId() == u.getId()) {
@@ -61,11 +81,10 @@ public class Biblioteca {
 		}
 
 		if (emprestados >= u.getLimiteEmprestimos()) {
-			System.out.println("Usuário " + u.getNome() + " já atingiu o limite de empréstimos!");
+			System.out.println("Você já atingiu o limite de empréstimos!");
 			return;
 		}
 
-		// realiza o empréstimo
 		livro.setStatus(StatusLivro.EMPRESTADO);
 		Emprestimo emp = new Emprestimo(livro, u);
 		emprestimos.add(emp);
